@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProportionImageView">
+        <!--  name 是待会你在布局文件里面应用的名字    format是申明的格式   dimension 高度 20dp  reference 资源引用 @drawable/-->
+        <attr name="widthProportion" format="float"/>
+        <attr name="heightProportion" format="float"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="roundedimageview">
+        <attr name="border_thickness" format="dimension"/>
+        <attr name="border_outside_color" format="color"/>
+        <attr name="border_inside_color" format="color"/>
+    </declare-styleable>
+
+    <!-- 获取验证码按钮 -->
+    <declare-styleable name="VerificationCodeButton">
+        <attr name="timing_background" format="reference" />
+        <attr name="timing_textColor" format="color" />
+    </declare-styleable>
+</resources>
