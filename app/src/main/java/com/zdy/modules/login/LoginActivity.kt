@@ -1,9 +1,12 @@
 package com.zdy.modules.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.zdy.MainActivity
 import com.zdy.api.WanAndroidApi
 import com.zdy.base.BaseActivity
 import com.zdy.entity.LoginResponse
@@ -39,10 +42,14 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
     override fun loginSuccess(loginBean: LoginResponse?) {
         Log.d(TAG, "loginSuccess: ")
+        Toast.makeText(this@LoginActivity, "登录成功 ~ 欧耶", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@LoginActivity, MainActivity::class .java)
+        startActivity(intent)
     }
 
     override fun loginFail(errorCode: String, errorMsg: String?) {
         Log.d(TAG, "loginFail: ")
+        Toast.makeText(this@LoginActivity, "登录失败 ~ 呜呜呜", Toast.LENGTH_SHORT).show()
     }
 
     override fun createPresenter(): LoginPresenter = LoginPresenterImpl(this)

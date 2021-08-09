@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
 }
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -31,10 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -60,4 +61,12 @@ dependencies {
 
     implementation(["com.trello.rxlifecycle2:rxlifecycle-kotlin:$rxlifecycle_version",
                     "com.trello.rxlifecycle2:rxlifecycle-components:$rxlifecycle_version"])
+
+    //room
+    implementation 'androidx.room:room-runtime:2.3.0'
+    annotationProcessor 'androidx.room:room-compiler:2.3.0'
+    kapt 'android.arch.persistence.room:compiler:2.3.0'
+    // 下拉刷新依赖
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.paging:paging-runtime:3.0.0-alpha02'
 }
