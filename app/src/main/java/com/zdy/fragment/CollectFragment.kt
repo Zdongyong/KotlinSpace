@@ -11,7 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.fragment.collect.CollectViewModel
-import com.zdy.fragment.collect.RepoAdapter
+import com.zdy.fragment.collect.adapter.FootAdapter
+import com.zdy.fragment.collect.adapter.RepoAdapter
 import com.zdy.mykotlin.R
 import kotlinx.android.synthetic.main.fragment_collect.*
 import kotlinx.coroutines.flow.collectLatest
@@ -52,6 +53,8 @@ class CollectFragment : Fragment() {
                 repoAdapter.submitData(pagingData)
             }
         }
+
+
         //初始状态添加监听
         repoAdapter.addLoadStateListener {
             when (it.refresh) {

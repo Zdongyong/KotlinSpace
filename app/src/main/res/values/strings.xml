@@ -18,6 +18,7 @@
     <!-- TODO 先写出来再说 -->
     <string name="title_home">首页</string>
     <string name="title_collect">收藏</string>
+    <string name="title_record">记录</string>
     <string name="title_msg">消息</string>
     <string name="title_personal">个人</string>
 

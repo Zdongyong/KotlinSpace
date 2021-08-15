@@ -7,6 +7,8 @@ package com.zdy.constants
  */
 object Config {
 
-    val baseUrl: String = "https://www.wanandroid.com"
+    const val baseUrl: String = "https://www.wanandroid.com"
+
+    const val baseUrlZhiHu = "https://news-at.zhihu.com/api/4/news/"
 
 }

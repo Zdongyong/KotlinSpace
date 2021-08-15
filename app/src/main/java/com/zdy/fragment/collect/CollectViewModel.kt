@@ -14,7 +14,7 @@ import com.zdy.netWork.ApiCilent
  */
 class CollectViewModel : BaseViewModel() {
 
-    val wanAndroidApi = ApiCilent.instance.getAPICilent(WanAndroidApi::class.java)
+    val wanAndroidApi = ApiCilent.instance.getAPICilent(true,WanAndroidApi::class.java)
 
     /**
      * 获取数据

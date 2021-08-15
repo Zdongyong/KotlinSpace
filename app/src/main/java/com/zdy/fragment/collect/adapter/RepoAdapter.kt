@@ -1,4 +1,4 @@
-package com.zdy.fragment.collect
+package com.zdy.fragment.collect.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -45,7 +45,8 @@ class RepoAdapter(
         var binding = dataBindingUtil
     }
 
-    object DataComparator: DiffUtil.ItemCallback<DataBean>(){
+
+    object DataComparator : DiffUtil.ItemCallback<DataBean>() {
 
         override fun areItemsTheSame(oldItem: DataBean, newItem: DataBean): Boolean {
             return oldItem.id == newItem.id

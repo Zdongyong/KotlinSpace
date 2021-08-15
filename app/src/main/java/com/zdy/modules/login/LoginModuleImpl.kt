@@ -30,7 +30,7 @@ class LoginModuleImpl : LoginModule {
         password: String,
         loginListener: LoginPresenter.LoginListener
     ) {
-        ApiCilent.instance.getAPICilent(WanAndroidApi::class.java)
+        ApiCilent.instance.getAPICilent(true,WanAndroidApi::class.java)
             .login(username, password)
             .subscribeOn(Schedulers.io())//切换线程
             .observeOn(AndroidSchedulers.mainThread())

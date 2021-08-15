@@ -13,6 +13,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/paging_zhu" />
+            <option value="$PROJECT_DIR$/retrofit_ktx" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

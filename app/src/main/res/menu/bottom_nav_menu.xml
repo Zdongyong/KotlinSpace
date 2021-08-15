@@ -13,6 +13,12 @@
         android:icon="@drawable/ic_collect_black_24dp"
         android:title="@string/title_collect" />
 
+    <!-- 收藏  ...... 可能会变 -->
+    <item
+        android:id="@+id/navigation_record"
+        android:icon="@drawable/ic_record_24dp"
+        android:title="@string/title_record" />
+
     <!-- 个人 -->
     <item
         android:id="@+id/navigation_personal"

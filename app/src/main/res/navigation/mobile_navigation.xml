@@ -19,6 +19,12 @@
         tools:layout="@layout/fragment_collect" />
 
     <fragment
+        android:id="@+id/navigation_record"
+        android:name="com.zdy.fragment.RecordFragment"
+        android:label="@string/title_record"
+        tools:layout="@layout/fragment_record" />
+
+    <fragment
         android:id="@+id/navigation_personal"
         android:name="com.zdy.fragment.PersonalFragment"
         android:label="@string/title_personal"

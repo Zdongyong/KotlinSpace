@@ -28,7 +28,14 @@ class ApiCilent {
     }
 
     //初始化网络
-    fun <T> getAPICilent(apiInterface: Class<T>): T {
+    fun <T> getAPICilent(isWan: Boolean, apiInterface: Class<T>): T {
+
+        var baseUrl: String
+        if (isWan) {
+            baseUrl = Config.baseUrl
+        } else {
+            baseUrl = Config.baseUrlZhiHu
+        }
 
         //创建okhttpCilent
         val okHttpClient = OkHttpClient().newBuilder()
@@ -44,7 +51,7 @@ class ApiCilent {
 
         //创建Retrofit
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Config.baseUrl)
+            .baseUrl(baseUrl)
             .client(okHttpClient)//请求
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//交给RxJava来处理
             .addConverterFactory(GsonConverterFactory.create())//返回值交给Gson
@@ -52,8 +59,5 @@ class ApiCilent {
 
         return retrofit.create(apiInterface);
     }
-
-
-
 
 }
