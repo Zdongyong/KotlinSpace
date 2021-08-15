@@ -1,65 +1,84 @@
 package com.zdy.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.zdy.fragment.collect.CollectViewModel
 import com.zdy.fragment.collect.RepoAdapter
 import com.zdy.mykotlin.R
+import kotlinx.android.synthetic.main.fragment_collect.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class CollectFragment : Fragment() {
 
-    private val repoAdapter = RepoAdapter()
+    companion object{
+        val  TAG : String = "CollectFragment"
+    }
 
+    private val repoAdapter = RepoAdapter{ position, it, adapter ->
+        it?.chapterName = "黄林晴${position}"
+        adapter.notifyDataSetChanged()
+    }
+
+    private val collectViewModel: CollectViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_collect, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recycler_view.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = repoAdapter
+        recycler_view.layoutManager = LinearLayoutManager(activity)
+        recycler_view.adapter = repoAdapter
+
         lifecycleScope.launch {
-            viewModel.getPagingData().collect { pagingData ->
+            //观察 PagingData 流
+            collectViewModel.getData().collectLatest { pagingData ->
                 repoAdapter.submitData(pagingData)
             }
         }
+        //初始状态添加监听
         repoAdapter.addLoadStateListener {
             when (it.refresh) {
+
                 is LoadState.NotLoading -> {
-                    recyclerView.visibility = View.VISIBLE
+                    Log.d(TAG, "is NotLoading")
                 }
                 is LoadState.Loading -> {
-                    recyclerView.visibility = View.INVISIBLE
+                    Log.d(TAG, "is Loading")
                 }
                 is LoadState.Error -> {
-                    val state = it.refresh as LoadState.Error
+                    Log.d(TAG, "is Error:")
+                    when ((it.refresh as LoadState.Error).error) {
+                        is IOException -> {
+                            Log.d(TAG, "IOException")
+                        }
+                        else -> {
+                            Log.d(TAG, "others exception")
+                        }
+                    }
                 }
             }
         }
+
     }
 
     private fun initData() {
-
-
 
     }
 

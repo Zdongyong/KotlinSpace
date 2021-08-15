@@ -1,4 +1,4 @@
-package com.zdy.Constants
+package com.zdy.constants
 
 /**
  * 创建日期：8/1/21 on 3:40 PM

@@ -1,6 +1,6 @@
 package com.zdy.netWork
 
-import com.zdy.Constants.Config
+import com.zdy.constants.Config
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

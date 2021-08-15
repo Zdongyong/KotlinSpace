@@ -1,9 +1,9 @@
 package com.zdy.api
 
-import com.zdy.fragment.collect.bean.ArticleBean
 import com.zdy.entity.BaseResponse
 import com.zdy.entity.LoginResponse
-import com.zdy.fragment.collect.bean.RepoResponse
+import com.zdy.fragment.collect.bean.BasePagingResponse
+import com.zdy.fragment.collect.bean.CollectBean
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -26,10 +26,10 @@ interface WanAndroidApi {
     ): Observable<BaseResponse<LoginResponse>>
 
     /**
-     * 获取项目列表
+     * 获取数据
      */
-    @GET("search/repositories?sort=stars&q=Android")
-    suspend fun searchRepos(@Query("page") page: Int, @Query("per_page") perPage: Int): RepoResponse
+    @GET("wenda/list/{pageId}/json")
+    suspend fun getData(@Path("pageId") pageId: Int): BasePagingResponse<CollectBean>
 
 
 }

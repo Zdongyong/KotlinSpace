@@ -13,6 +13,9 @@ import com.zdy.entity.LoginResponse
 import com.zdy.modules.login.inter.LoginPresenter
 import com.zdy.modules.login.inter.LoginView
 import com.zdy.mykotlin.R
+import com.zdy.utils.LOGIN_STATE
+import com.zdy.utils.getValue
+import com.zdy.utils.putValue
 import kotlinx.android.synthetic.main.activity_user_login.*
 
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
@@ -25,6 +28,14 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
         //WanAndroidApi.class = WanAndroidApi::class.java
 //        ApiCilent.instance.getAPICilent(WanAndroidApi::class.java)
         user_login_bt.setOnClickListener(onClickListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (getValue(this, LOGIN_STATE,false)){
+            val intent = Intent(this@LoginActivity, MainActivity::class .java)
+            startActivity(intent)
+        }
     }
 
     private val onClickListener = View.OnClickListener { view ->
@@ -43,6 +54,7 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
     override fun loginSuccess(loginBean: LoginResponse?) {
         Log.d(TAG, "loginSuccess: ")
         Toast.makeText(this@LoginActivity, "登录成功 ~ 欧耶", Toast.LENGTH_SHORT).show()
+        putValue(this,LOGIN_STATE,true)
         val intent = Intent(this@LoginActivity, MainActivity::class .java)
         startActivity(intent)
     }
