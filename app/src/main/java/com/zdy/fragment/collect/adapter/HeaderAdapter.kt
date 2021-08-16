@@ -15,31 +15,27 @@ import com.zdy.mykotlin.R
  * 描述：
  * 作者：zhudongyong
  */
-class FootAdapter(
-    private val retry: () -> Unit
-):LoadStateAdapter<FootAdapter.FooterHolder>() {
+class HeaderAdapter(
+    private val refresh: () -> Unit
+):LoadStateAdapter<HeaderAdapter.HooterHolder>() {
 
-    override fun onBindViewHolder(holder: FootAdapter.FooterHolder, loadState: LoadState) {
-        if (loadState.endOfPaginationReached) {
-            holder.showNoMore()
-        } else {
+    override fun onBindViewHolder(holder: HooterHolder, loadState: LoadState) {
             holder.showLoading()
-        }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         loadState: LoadState
-    ): FootAdapter.FooterHolder {
-        return FooterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer, parent, false))
+    ): HeaderAdapter.HooterHolder {
+        return HooterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_header, parent, false))
     }
 
-    class FooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val pbLoading by lazy {
-            itemView.findViewById<ProgressBar>(R.id.pb_loading)
+            itemView.findViewById<ProgressBar>(R.id.header_icon)
         }
         private val tvLoading by lazy {
-            itemView.findViewById<TextView>(R.id.tv_loading)
+            itemView.findViewById<TextView>(R.id.header_loading)
         }
 
         fun showLoading() {

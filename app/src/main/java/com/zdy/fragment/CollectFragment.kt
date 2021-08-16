@@ -12,6 +12,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.fragment.collect.CollectViewModel
 import com.zdy.fragment.collect.adapter.FootAdapter
+import com.zdy.fragment.collect.adapter.HeaderAdapter
 import com.zdy.fragment.collect.adapter.RepoAdapter
 import com.zdy.mykotlin.R
 import kotlinx.android.synthetic.main.fragment_collect.*
@@ -45,7 +46,13 @@ class CollectFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.layoutManager = LinearLayoutManager(activity)
-        recycler_view.adapter = repoAdapter
+//        recycler_view.adapter = repoAdapter
+
+        recycler_view.adapter  =
+            repoAdapter.withLoadStateHeaderAndFooter(
+                header = HeaderAdapter(refresh = {repoAdapter.refresh()}),
+                footer = FootAdapter(retry = {repoAdapter.retry()})
+            )
 
         lifecycleScope.launch {
             //观察 PagingData 流
@@ -54,11 +61,9 @@ class CollectFragment : Fragment() {
             }
         }
 
-
         //初始状态添加监听
         repoAdapter.addLoadStateListener {
             when (it.refresh) {
-
                 is LoadState.NotLoading -> {
                     Log.d(TAG, "is NotLoading")
                 }
@@ -67,6 +72,7 @@ class CollectFragment : Fragment() {
                 }
                 is LoadState.Error -> {
                     Log.d(TAG, "is Error:")
+                        repoAdapter.retry()
                     when ((it.refresh as LoadState.Error).error) {
                         is IOException -> {
                             Log.d(TAG, "IOException")
