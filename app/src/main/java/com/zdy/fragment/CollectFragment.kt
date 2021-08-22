@@ -12,7 +12,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.fragment.collect.CollectViewModel
 import com.zdy.fragment.collect.adapter.FootAdapter
-import com.zdy.fragment.collect.adapter.HeaderAdapter
 import com.zdy.fragment.collect.adapter.RepoAdapter
 import com.zdy.mykotlin.R
 import kotlinx.android.synthetic.main.fragment_collect.*
@@ -45,12 +44,12 @@ class CollectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         recycler_view.layoutManager = LinearLayoutManager(activity)
 //        recycler_view.adapter = repoAdapter
 
         recycler_view.adapter  =
-            repoAdapter.withLoadStateHeaderAndFooter(
-                header = HeaderAdapter(refresh = {repoAdapter.refresh()}),
+            repoAdapter.withLoadStateFooter(
                 footer = FootAdapter(retry = {repoAdapter.retry()})
             )
 
@@ -87,8 +86,10 @@ class CollectFragment : Fragment() {
 
     }
 
-    private fun initData() {
-
+    private fun initView() {
+        val  view = layoutInflater.inflate(R.layout.item_header,null)
+        swipe_refresh.setHeaderView(view)
+//        swipe_refresh.setRefreshing(true)
     }
 
 
