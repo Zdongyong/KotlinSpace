@@ -28,7 +28,7 @@ class RecordFragment: Fragment() {
     
     private val recordAdapter by lazy { BaseAdapter(RecordViewHolder()) }
 
-    private val model: RecordViewModel by viewModels()
+    private val recordViewModel: RecordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +60,7 @@ class RecordFragment: Fragment() {
 //        }
         //绑定数据源
         lifecycleScope.launchWhenCreated {
-            model.data.collectLatest {
+            recordViewModel.data.collectLatest {
                 recordAdapter.setData(this@RecordFragment.lifecycle,it)
             }
         }
