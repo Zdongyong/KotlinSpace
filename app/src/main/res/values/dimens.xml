@@ -16,8 +16,9 @@
                     12sp  dimens.xml
                     String
     -->
-    <dimen name="content_trans_y">280dp</dimen>
+    <dimen name="content_trans_y">200dp</dimen>
     <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="face_trans_y">-12dp</dimen>
     <dimen name="content_trans_down_end_y">360dp</dimen>
     <dimen name="ts1">10.0sp</dimen>
     <dimen name="ts2">11.0sp</dimen>
