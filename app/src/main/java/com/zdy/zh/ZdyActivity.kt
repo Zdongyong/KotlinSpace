@@ -1,39 +1,23 @@
-package com.zdy.fragment
+package com.zdy.zh
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.flyco.tablayout.SlidingTabLayout
-import com.zdy.fragment.collect.CollectViewModel
-import com.zdy.fragment.record.viewHolder.RecordViewHolder
-import com.zdy.fragment.record.viewModel.RecordViewModel
 import com.zdy.mykotlin.R
-import com.zdy.paging.BaseAdapter
-import com.zdy.paging.iterm.State
-import com.zdy.zh.SongFragment
-import com.zdy.zh.ZdyActivity
-import kotlinx.android.synthetic.main.fragment_record.*
-import kotlinx.coroutines.flow.collectLatest
 import java.lang.reflect.Field
-import java.util.ArrayList
+import java.util.*
 
 /**
- * 创建日期：8/15/21 on 7:20 PM
+ * 创建日期：8/27/21 on 10:20 PM
  * 描述：
  * 作者：zhudongyong
  */
-class RecordFragment: Fragment() {
+class ZdyActivity : AppCompatActivity() {
 
     private val mTitles = arrayOf(
         "热门", "专辑"
@@ -44,28 +28,19 @@ class RecordFragment: Fragment() {
     private var mViewPager: ViewPager? = null
     private lateinit var mFragmentAdapter: MyFragmentAdapter
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_record, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mViewPager = view.findViewById(R.id.vp)
-        tabLayout = view.findViewById(R.id.stl)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_zdy)
+        mViewPager = findViewById(R.id.vp)
+        tabLayout = findViewById(R.id.stl)
         initViewPager()
     }
-
 
     fun initViewPager() {
         mFragments.add(SongFragment())
         mFragments.add(SongFragment())
         mFragmentAdapter = MyFragmentAdapter(
-            activity?.supportFragmentManager
+            supportFragmentManager
         )
         mViewPager?.adapter = mFragmentAdapter
 

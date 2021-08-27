@@ -103,20 +103,34 @@
             app:layout_constraintTop_toTopOf="@+id/tv_cls_content_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <LinearLayout
         android:id="@+id/refresh_layout"
         android:translationY="250dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="com.zdy.behavior.ContentBehavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_record"
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/stl"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:tl_indicator_height="0dp"
+            app:tl_tab_space_equal="true"
+            app:tl_textBold="BOTH"
+            app:tl_textSelectColor="#fc4070"
+            app:tl_textUnselectColor="#666"
+            app:tl_textsize="14sp"
+            app:tl_underline_color="#e5e5e5"
+            app:tl_underline_gravity="BOTTOM"
+            app:tl_underline_height="0.5dp" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            tools:listitem="@layout/item_record" />
+            android:background="@android:color/white" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

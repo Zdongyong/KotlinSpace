@@ -81,4 +81,5 @@ dependencies {
     implementation 'androidx.paging:paging-runtime:3.0.0-alpha03'
     //Flow
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7-mpp-dev-11'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 }
