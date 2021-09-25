@@ -63,7 +63,7 @@ class ZZSwipeRefreshView : ViewGroup {
     private var mReturningToStart = false
     private val LAYOUT_ATTRS = intArrayOf(R.attr.enabled)
 
-    private var mHeadViewContainer = RelativeLayout(context)
+    private var mHeaderViewContainer = RelativeLayout(context)
     private var mFooterViewContainer = RelativeLayout(context)
     private var mHeaderViewIndex = -1
     private var mFooterViewIndex = -1
@@ -128,8 +128,8 @@ class ZZSwipeRefreshView : ViewGroup {
         )
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        mHeadViewContainer.visibility = GONE
-        addView(mHeadViewContainer)
+        mHeaderViewContainer.visibility = GONE
+        addView(mHeaderViewContainer)
     }
 
     /**
@@ -157,7 +157,7 @@ class ZZSwipeRefreshView : ViewGroup {
                     MeasureSpec.EXACTLY
                 )
             )
-            mHeadViewContainer.measure(
+            mHeaderViewContainer.measure(
                 MeasureSpec.makeMeasureSpec(
                     mHeaderViewWidth, MeasureSpec.EXACTLY
                 ), MeasureSpec
@@ -171,13 +171,13 @@ class ZZSwipeRefreshView : ViewGroup {
             )
             if (!mUsingCustomStart && !mOriginalOffsetCalculated) {
                 mOriginalOffsetCalculated = true
-                mOriginalOffsetTop = -(mHeadViewContainer.measuredHeight)
+                mOriginalOffsetTop = -(mHeaderViewContainer.measuredHeight)
                 mCurrentTargetOffsetTop = mOriginalOffsetTop
                 updateListenerCallBack()
             }
             mHeaderViewIndex = -1
             for (index in 0 until childCount) {
-                if (getChildAt(index) === mHeadViewContainer) {
+                if (getChildAt(index) === mHeaderViewContainer) {
                     mHeaderViewIndex = index
                     break
                 }
@@ -200,7 +200,7 @@ class ZZSwipeRefreshView : ViewGroup {
             ensureTarget()
         }
         mTargetView?.let {
-            var distance = mCurrentTargetOffsetTop + mHeadViewContainer.measuredHeight
+            var distance = mCurrentTargetOffsetTop + mHeaderViewContainer.measuredHeight
             if (!targetScrollWithLayout) {
                 // 判断标志位，如果目标View不跟随手指的滑动而滑动，将下拉偏移量设置为0
                 distance = 0
@@ -215,9 +215,9 @@ class ZZSwipeRefreshView : ViewGroup {
                         + childHeight
             ) // 更新目标View的位置
 
-            val headViewWidth = mHeadViewContainer.measuredWidth
-            val headViewHeight = mHeadViewContainer.measuredHeight
-            mHeadViewContainer.layout(
+            val headViewWidth = mHeaderViewContainer.measuredWidth
+            val headViewHeight = mHeaderViewContainer.measuredHeight
+            mHeaderViewContainer.layout(
                 width / 2 - headViewWidth / 2,
                 mCurrentTargetOffsetTop, width / 2 + headViewWidth / 2,
                 mCurrentTargetOffsetTop + headViewHeight
@@ -241,7 +241,7 @@ class ZZSwipeRefreshView : ViewGroup {
         if (mTargetView == null) {
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
-                if (child != mHeadViewContainer
+                if (child != mHeaderViewContainer
                     && child != mFooterViewContainer
                 ) {
                     mTargetView = child
@@ -312,7 +312,7 @@ class ZZSwipeRefreshView : ViewGroup {
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 // 恢复HeaderView的初始位置
-                setTargetOffsetTopAndBottom(mOriginalOffsetTop - mHeadViewContainer.top, true)
+                setTargetOffsetTopAndBottom(mOriginalOffsetTop - mHeaderViewContainer.top, true)
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0)
                 mIsBeingDragged = false
                 val initialMotionY = getMotionEventY(ev, mActivePointerId)
@@ -524,12 +524,12 @@ class ZZSwipeRefreshView : ViewGroup {
                     val extraMove = slingshotDist * tensionPercent * 2
                     val targetY = (mOriginalOffsetTop
                             + (slingshotDist * dragPercent + extraMove).toInt())
-                    if (mHeadViewContainer.visibility != VISIBLE) {
-                        mHeadViewContainer.visibility = VISIBLE
+                    if (mHeaderViewContainer.visibility != VISIBLE) {
+                        mHeaderViewContainer.visibility = VISIBLE
                     }
                     if (!mScale) {
-                        ViewCompat.setScaleX(mHeadViewContainer, 1f)
-                        ViewCompat.setScaleY(mHeadViewContainer, 1f)
+                        ViewCompat.setScaleX(mHeaderViewContainer, 1f)
+                        ViewCompat.setScaleY(mHeaderViewContainer, 1f)
                     }
                     if (overscrollTop < mTotalDragDistance) {
                         if (mScale) {
@@ -646,14 +646,14 @@ class ZZSwipeRefreshView : ViewGroup {
         }
         mScaleDownAnimation?.duration = SCALE_DOWN_DURATION.toLong()
         mScaleDownAnimation?.setAnimationListener(listener)
-        mHeadViewContainer.clearAnimation()
-        mHeadViewContainer.startAnimation(mScaleDownAnimation)
+        mHeaderViewContainer.clearAnimation()
+        mHeaderViewContainer.startAnimation(mScaleDownAnimation)
     }
 
     private fun setAnimationProgress(progress: Float) {
         var progress = 1f
-        ViewCompat.setScaleX(mHeadViewContainer, progress)
-        ViewCompat.setScaleY(mHeadViewContainer, progress)
+        ViewCompat.setScaleX(mHeaderViewContainer, progress)
+        ViewCompat.setScaleY(mHeaderViewContainer, progress)
     }
 
     /**
@@ -673,8 +673,8 @@ class ZZSwipeRefreshView : ViewGroup {
             if (listener != null) {
                 mAnimateToStartPosition.setAnimationListener(listener)
             }
-            mHeadViewContainer.clearAnimation()
-            mHeadViewContainer.startAnimation(mAnimateToStartPosition)
+            mHeaderViewContainer.clearAnimation()
+            mHeaderViewContainer.startAnimation(mAnimateToStartPosition)
         }
         resetTargetLayoutDelay(ANIMATE_TO_START_DURATION)
     }
@@ -690,8 +690,8 @@ class ZZSwipeRefreshView : ViewGroup {
                 t: Transformation
             ) {
                 val targetScale: Float =
-                    ViewCompat.getScaleX(mHeadViewContainer) + (-ViewCompat.getScaleX(
-                        mHeadViewContainer
+                    ViewCompat.getScaleX(mHeaderViewContainer) + (-ViewCompat.getScaleX(
+                        mHeaderViewContainer
                     ) * interpolatedTime)
                 setAnimationProgress(targetScale)
                 moveToStart(interpolatedTime)
@@ -701,8 +701,8 @@ class ZZSwipeRefreshView : ViewGroup {
         if (listener != null) {
             mScaleDownToStartAnimation?.setAnimationListener(listener)
         }
-        mHeadViewContainer.clearAnimation()
-        mHeadViewContainer.startAnimation(mScaleDownToStartAnimation)
+        mHeaderViewContainer.clearAnimation()
+        mHeaderViewContainer.startAnimation(mScaleDownToStartAnimation)
     }
 
     /**
@@ -734,14 +734,14 @@ class ZZSwipeRefreshView : ViewGroup {
         listener: Animation.AnimationListener?
     ) {
         mFrom = from
-        mHeadViewContainer.clearAnimation()
+        mHeaderViewContainer.clearAnimation()
         mAnimateToCorrectPosition.reset()
         mAnimateToCorrectPosition.duration = 1000
         mAnimateToCorrectPosition.interpolator = mDecelerateInterpolator
         if (listener != null) {
             mAnimateToCorrectPosition.setAnimationListener(listener)
         }
-        mHeadViewContainer.startAnimation(mAnimateToCorrectPosition)
+        mHeaderViewContainer.startAnimation(mAnimateToCorrectPosition)
     }
 
     private val mAnimateToCorrectPosition: Animation = object : Animation() {
@@ -754,7 +754,7 @@ class ZZSwipeRefreshView : ViewGroup {
                 mSpinnerFinalOffset.toInt()
             }
             targetTop = mFrom + ((endTarget - mFrom) * interpolatedTime).toInt()
-            val offset = targetTop - mHeadViewContainer.top
+            val offset = targetTop - mHeaderViewContainer.top
             setTargetOffsetTopAndBottom(offset, false /* requires update */)
         }
 
@@ -794,9 +794,9 @@ class ZZSwipeRefreshView : ViewGroup {
     }
 
     private fun setTargetOffsetTopAndBottom(offset: Int, requiresUpdate: Boolean) {
-        mHeadViewContainer.bringToFront()
-        mHeadViewContainer.offsetTopAndBottom(offset)
-        mCurrentTargetOffsetTop = mHeadViewContainer.top
+        mHeaderViewContainer.bringToFront()
+        mHeaderViewContainer.offsetTopAndBottom(offset)
+        mCurrentTargetOffsetTop = mHeaderViewContainer.top
         if (requiresUpdate && Build.VERSION.SDK_INT < 11) {
             invalidate()
         }
@@ -805,7 +805,7 @@ class ZZSwipeRefreshView : ViewGroup {
 
 
     /**
-     * 添加头布局
+     * 自定义头部布局
      *
      * @param child
      */
@@ -813,12 +813,30 @@ class ZZSwipeRefreshView : ViewGroup {
         if (child == null) {
             return
         }
-        mHeadViewContainer.removeAllViews()
+        mHeaderViewContainer.removeAllViews()
         val layoutParams = RelativeLayout.LayoutParams(
             mHeaderViewWidth, mHeaderViewHeight
         )
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        mHeadViewContainer.addView(child, layoutParams)
+        mHeaderViewContainer.addView(child, layoutParams)
+    }
+    
+    
+    /**
+     * 自定义底部布局
+     *
+     * @param child
+     */
+    fun setFooterView(child: View?) {
+        if (child == null) {
+            return
+        }
+        mFooterViewContainer.removeAllViews()
+        val layoutParams = RelativeLayout.LayoutParams(
+            mFooterViewWidth, mFooterViewHeight
+        )
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        mFooterViewContainer.addView(child, layoutParams)
     }
 
 
@@ -826,7 +844,7 @@ class ZZSwipeRefreshView : ViewGroup {
      * 更新回调
      */
     private fun updateListenerCallBack() {
-        val distance = mCurrentTargetOffsetTop + mHeadViewContainer.height
+        val distance = mCurrentTargetOffsetTop + mHeaderViewContainer.height
 //        pullRefreshListener?.onPullDistance(distance)
     }
 
@@ -847,14 +865,14 @@ class ZZSwipeRefreshView : ViewGroup {
                 if (mRefreshing) {
                     pullRefreshListener?.onRefresh()
                 } else {
-                    mHeadViewContainer.visibility = GONE
+                    mHeaderViewContainer.visibility = GONE
                     mFooterViewContainer.visibility = GONE
                     setTargetOffsetTopAndBottom(
                         mOriginalOffsetTop
                                 - mCurrentTargetOffsetTop, true
                     )
                 }
-                mCurrentTargetOffsetTop = mHeadViewContainer.top
+                mCurrentTargetOffsetTop = mHeaderViewContainer.top
                 updateListenerCallBack()
             }
 
@@ -877,9 +895,9 @@ class ZZSwipeRefreshView : ViewGroup {
             childLeft, childTop, childLeft + childWidth, childTop
                     + childHeight
         )
-        val headViewWidth = mHeadViewContainer.measuredWidth
-        val headViewHeight = mHeadViewContainer.measuredHeight
-        mHeadViewContainer.layout(
+        val headViewWidth = mHeaderViewContainer.measuredWidth
+        val headViewHeight = mHeaderViewContainer.measuredHeight
+        mHeaderViewContainer.layout(
             width / 2 - headViewWidth / 2,
             -headViewHeight, width / 2 + headViewWidth / 2, 0
         ) // 更新头布局的位置
@@ -901,12 +919,12 @@ class ZZSwipeRefreshView : ViewGroup {
     private fun moveToStart(interpolatedTime: Float) {
         var targetTop = 0
         targetTop = mFrom + ((mOriginalOffsetTop - mFrom) * interpolatedTime).toInt()
-        val offset = targetTop - mHeadViewContainer.top
+        val offset = targetTop - mHeaderViewContainer.top
         setTargetOffsetTopAndBottom(offset, false /* requires update */)
     }
 
     fun setHeaderViewBackgroundColor(color: Int) {
-        mHeadViewContainer.setBackgroundColor(color)
+        mHeaderViewContainer.setBackgroundColor(color)
     }
 
     /**
@@ -922,7 +940,7 @@ class ZZSwipeRefreshView : ViewGroup {
         this.pullRefreshListener = listener
     }
 
-    fun setOnPullRefreshListener(listener: OnPushLoadMoreListener) {
+    fun setOnPushLoadMoreListener(listener: OnPushLoadMoreListener) {
         this.pushLoadMoreListener = listener
     }
 }

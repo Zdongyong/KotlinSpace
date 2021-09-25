@@ -19,6 +19,7 @@ import com.zdy.fragment.collect.adapter.FootAdapter
 import com.zdy.fragment.collect.adapter.RepoAdapter
 import com.zdy.mykotlin.R
 import com.zdy.view.OnPullRefreshListener
+import com.zdy.view.OnPushLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_collect.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +29,7 @@ import java.io.IOException
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class CollectFragment : Fragment(),OnPullRefreshListener{
+class CollectFragment : Fragment(),OnPullRefreshListener,OnPushLoadMoreListener{
 
     companion object{
         val  TAG : String = "CollectFragment"
@@ -98,9 +99,11 @@ class CollectFragment : Fragment(),OnPullRefreshListener{
 
     private fun initView() {
         swipe_refresh?.setHeaderView(createHeaderView()) // add headerView
+        swipe_refresh?.setFooterView(createFooterView())
         swipe_refresh.setTargetScrollWithLayout(true)
         swipe_refresh.setHeaderViewBackgroundColor(resources.getColor(R.color.white))
         swipe_refresh?.setOnPullRefreshListener(this)
+        swipe_refresh?.setOnPushLoadMoreListener(this)
     }
 
     private fun createHeaderView():View{
@@ -114,6 +117,12 @@ class CollectFragment : Fragment(),OnPullRefreshListener{
         imageView?.setImageResource(R.drawable.down_arrow)
         progressBar?.visibility = View.GONE
         return headerView
+    }
+
+    private fun createFooterView():View{
+        val footerView: View = LayoutInflater.from(swipe_refresh!!.context)
+            .inflate(R.layout.item_footer, null)
+        return footerView
     }
 
     override fun onRefresh() {
@@ -131,6 +140,12 @@ class CollectFragment : Fragment(),OnPullRefreshListener{
         imageView?.rotation = (if (enable) 180F else 0.toFloat())
         textView?.text = (if (enable) "松开刷新" else "下拉刷新")
         imageView?.visibility = View.VISIBLE
+    }
+
+    override fun onLoadMore() {
+    }
+
+    override fun onPushEnable(enable: Boolean) {
     }
 
 
