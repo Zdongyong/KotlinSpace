@@ -121,6 +121,7 @@ class CollectFragment : Fragment(),OnPullRefreshListener{
         imageView?.visibility = (View.GONE)
         progressBar?.visibility = (View.VISIBLE)
         Handler().postDelayed({
+            repoAdapter.refresh()
             swipe_refresh.setRefreshing(false)
             progressBar?.visibility = View.GONE
         }, 1000)

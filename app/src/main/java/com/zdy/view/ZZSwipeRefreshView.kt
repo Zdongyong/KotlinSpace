@@ -32,10 +32,6 @@ import kotlin.math.pow
  */
 class ZZSwipeRefreshView : ViewGroup {
 
-    companion object {
-        private val LOG_TAG = "ZZSwipeRefreshView"
-    }
-
     private val HEADER_VIEW_HEIGHT: Int = 50 // HeaderView height (dp)
     private val DECELERATE_INTERPOLATION_FACTOR = 2f //动画插值器
     private val INVALID_POINTER = -1 //初始化手指point
@@ -83,21 +79,13 @@ class ZZSwipeRefreshView : ViewGroup {
     // 最后停顿时的偏移量px，与DEFAULT_CIRCLE_TARGET正比
     private var mSpinnerFinalOffset = 0f
 
-    private var mHeaderViewWidth // headerView的宽度
-            = 0
-
+    private var mHeaderViewWidth = 0 // headerView的宽度
     private var mFooterViewWidth = 0
-
     private var mHeaderViewHeight = 0
-
     private var mFooterViewHeight = 0
-
     private val mUsingCustomStart = false
-
-    private var targetScrollWithLayout:Boolean = true
-
+    private var targetScrollWithLayout: Boolean = true
     private var pushDistance = 0
-
     private var density = 1.0f
 
     private var pullRefreshListener: OnPullRefreshListener? = null // 下拉刷新
@@ -217,13 +205,12 @@ class ZZSwipeRefreshView : ViewGroup {
                 // 判断标志位，如果目标View不跟随手指的滑动而滑动，将下拉偏移量设置为0
                 distance = 0
             }
-            val child: View = it as View
             val childLeft = paddingLeft
             val childTop = paddingTop + distance - pushDistance // 根据偏移量distance更新
 
             val childWidth = width - paddingLeft - paddingRight
             val childHeight = height - paddingTop - paddingBottom
-            child.layout(
+            it.layout(
                 childLeft, childTop, childLeft + childWidth, childTop
                         + childHeight
             ) // 更新目标View的位置
@@ -357,12 +344,12 @@ class ZZSwipeRefreshView : ViewGroup {
                     }
                 }
 
-                //处理横向滑动冲突
+                //todo 处理横向滑动冲突
                 val xDiff: Float = abs(getMotionEventX(ev, mActivePointerId) - mInitialMotionX)
                 if (xDiff > yDiff) {
                     parent.requestDisallowInterceptTouchEvent(false)
                     return false
-                }else{
+                } else {
                     parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
@@ -681,7 +668,7 @@ class ZZSwipeRefreshView : ViewGroup {
         } else {
             mFrom = from
             mAnimateToStartPosition.reset()
-            mAnimateToStartPosition?.duration = ANIMATE_TO_START_DURATION.toLong()
+            mAnimateToStartPosition.duration = ANIMATE_TO_START_DURATION.toLong()
             mAnimateToStartPosition.interpolator = mDecelerateInterpolator
             if (listener != null) {
                 mAnimateToStartPosition.setAnimationListener(listener)
@@ -791,7 +778,7 @@ class ZZSwipeRefreshView : ViewGroup {
     }
 
     private fun updatePushDistanceListener() {
-        pushLoadMoreListener?.onPushDistance(pushDistance)
+//        pushLoadMoreListener?.onPushDistance(pushDistance)
     }
 
     private fun onSecondaryPointerUp(ev: MotionEvent) {
@@ -827,10 +814,10 @@ class ZZSwipeRefreshView : ViewGroup {
             return
         }
         mHeadViewContainer.removeAllViews()
-            val layoutParams = RelativeLayout.LayoutParams(
-                mHeaderViewWidth, mHeaderViewHeight
-            )
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        val layoutParams = RelativeLayout.LayoutParams(
+            mHeaderViewWidth, mHeaderViewHeight
+        )
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         mHeadViewContainer.addView(child, layoutParams)
     }
 
@@ -849,32 +836,25 @@ class ZZSwipeRefreshView : ViewGroup {
      */
     private val mRefreshListener: Animation.AnimationListener =
         object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-                Log.d("123123", "====onAnimationStart==")
+            override fun onAnimationStart(animation: Animation) {}
 
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {
-                Log.d("123123", "====2--==")
-            }
+            override fun onAnimationRepeat(animation: Animation) {}
 
             override fun onAnimationEnd(animation: Animation) {
 //                    Handler().postDelayed({
 //                        setR
 //                    }, 2000)
-                    if (mRefreshing) {
-                        pullRefreshListener?.let { it1 ->
-                            it1.onRefresh()
-                        }
-                    } else {
-                        mHeadViewContainer.visibility = GONE
-                        mFooterViewContainer.visibility = GONE
-                        setTargetOffsetTopAndBottom(
-                            mOriginalOffsetTop
-                                    - mCurrentTargetOffsetTop, true
-                        )
-                    }
-                    mCurrentTargetOffsetTop = mHeadViewContainer.top
+                if (mRefreshing) {
+                    pullRefreshListener?.onRefresh()
+                } else {
+                    mHeadViewContainer.visibility = GONE
+                    mFooterViewContainer.visibility = GONE
+                    setTargetOffsetTopAndBottom(
+                        mOriginalOffsetTop
+                                - mCurrentTargetOffsetTop, true
+                    )
+                }
+                mCurrentTargetOffsetTop = mHeadViewContainer.top
                 updateListenerCallBack()
             }
 

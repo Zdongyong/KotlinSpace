@@ -9,7 +9,7 @@ interface OnPushLoadMoreListener {
 
     fun onLoadMore()
 
-    fun onPushDistance(distance: Int)
+//    fun onPushDistance(distance: Int)
 
     fun onPushEnable(enable: Boolean)
 
