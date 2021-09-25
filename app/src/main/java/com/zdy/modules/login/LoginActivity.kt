@@ -35,6 +35,7 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
         if (getValue(this, LOGIN_STATE,false)){
             val intent = Intent(this@LoginActivity, MainActivity::class .java)
             startActivity(intent)
+            finish()
         }
     }
 
