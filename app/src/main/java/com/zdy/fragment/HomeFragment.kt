@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import com.zdy.mykotlin.R
-import com.zdy.zh.ZdyActivity
+import com.zdy.paging.PagingActivity
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -26,7 +24,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.ll_contents).setOnClickListener(View.OnClickListener {
-            startActivity(Intent(activity, ZdyActivity::class.java))
+            startActivity(Intent(activity, PagingActivity::class.java))
         })
     }
 }

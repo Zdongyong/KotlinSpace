@@ -9,7 +9,7 @@ interface OnPullRefreshListener {
 
     fun onRefresh()
 
-    fun onPullDistance(distance: Int)
+//    fun onPullDistance(distance: Int)
 
     fun onPullEnable(enable: Boolean)
 

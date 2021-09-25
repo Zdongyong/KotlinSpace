@@ -12,9 +12,9 @@ import com.zdy.netWork.ApiCilent
  * 描述：
  * 作者：zhudongyong
  */
-class CollectViewModel : BaseViewModel() {
+class CollectViewModel: BaseViewModel() {
 
-    val wanAndroidApi = ApiCilent.instance.getAPICilent(true,WanAndroidApi::class.java)
+    private val wanAndroidApi = ApiCilent.instance.getAPICilent(true,WanAndroidApi::class.java)
 
     /**
      * 获取数据

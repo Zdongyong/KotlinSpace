@@ -98,6 +98,7 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
     protected int mFrom;
 
     private float mStartingScale;
+    private float mPrevX;
 
     protected int mOriginalOffsetTop;
 
@@ -132,15 +133,13 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
 
     private float density = 1.0f;
 
-    private boolean isProgressEnable = true;
-
     /**
      * 下拉时，超过距离之后，弹回来的动画监听器
      */
     private AnimationListener mRefreshListener = new AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
-            isProgressEnable = false;
+            Log.d("123123","=====onAnimationStart=");
         }
 
         @Override
@@ -149,7 +148,7 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            isProgressEnable = true;
+            Log.d("123123","=====onAnimationEnd=");
             if (mRefreshing) {
                 if (mNotify) {
                     if (usingDefaultHeader) {
@@ -183,7 +182,7 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
         if (mListener != null) {
             mListener.onPullDistance(distance);
         }
-        if (usingDefaultHeader && isProgressEnable) {
+        if (usingDefaultHeader) {
             defaultProgressView.setPullDistance(distance);
         }
     }
@@ -406,7 +405,6 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
                 animateOffsetToCorrectPosition(mCurrentTargetOffsetTop,
                         mRefreshListener);
             } else {
-                //startScaleDownAnimation(mRefreshListener);
                 animateOffsetToStartPosition(mCurrentTargetOffsetTop, mRefreshListener);
             }
         }
@@ -648,6 +646,7 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
         // 下拉刷新判断
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mPrevX = ev.getX();
                 setTargetOffsetTopAndBottom(
                         mOriginalOffsetTop - mHeadViewContainer.getTop(), true);// 恢复HeaderView的初始位置
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
@@ -662,6 +661,14 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
                 if (mActivePointerId == INVALID_POINTER) {
                     Log.e(LOG_TAG,
                             "Got ACTION_MOVE event but don't have an active pointer id.");
+                    return false;
+                }
+
+                final float eventX = ev.getX();
+                float xDiff = Math.abs(eventX - mPrevX);
+                // Log.d("refresh" ,"move----" + eventX + "   " + mPrevX + "   " + mTouchSlop);
+                // 增加60的容差，让下拉刷新在竖直滑动时就可以触发
+                if (xDiff > mTouchSlop) {
                     return false;
                 }
 

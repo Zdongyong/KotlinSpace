@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KotlinProject</string>
+    <string name="app_name">古力-Jetpack</string>
 
     <!-- 网络请求相关的信息 -->
     <string name="service_error">服务器出错</string>
