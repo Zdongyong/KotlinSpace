@@ -70,7 +70,7 @@
                 <TextView
                     style="@style/wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="保险"
+                    android:text="推荐"
                     android:textColor="@color/title_black"
                     android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="按天买的意外\n保险"
+                    android:text="按照个人订阅\n推荐"
                     android:textColor="#B4B4B4"
                     android:textSize="10dp" />
             </LinearLayout>

@@ -1,4 +1,4 @@
-package com.zdy.view
+package com.zdy.view.swipeRefresh
 
 import android.R
 import android.animation.Animator
@@ -9,7 +9,6 @@ import android.content.res.TypedArray
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator

@@ -57,6 +57,11 @@
             android:label="@string/app_name"
             android:theme="@style/ActionBarTheme">
         </activity>
+        <activity
+            android:name="com.zdy.paging.RecommendActivity"
+            android:label="@string/app_name"
+            android:theme="@style/ActionBarTheme">
+        </activity>
     </application>
 
 </manifest>

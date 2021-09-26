@@ -18,10 +18,9 @@ import com.zdy.fragment.collect.CollectViewModel
 import com.zdy.fragment.collect.adapter.FootAdapter
 import com.zdy.fragment.collect.adapter.RepoAdapter
 import com.zdy.mykotlin.R
-import com.zdy.view.OnPullRefreshListener
-import com.zdy.view.OnPushLoadMoreListener
+import com.zdy.view.swipeRefresh.OnPullRefreshListener
+import com.zdy.view.swipeRefresh.OnPushLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_collect.*
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -29,7 +28,7 @@ import java.io.IOException
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class CollectFragment : Fragment(),OnPullRefreshListener,OnPushLoadMoreListener{
+class CollectFragment : Fragment(), OnPullRefreshListener, OnPushLoadMoreListener {
 
     companion object{
         val  TAG : String = "CollectFragment"

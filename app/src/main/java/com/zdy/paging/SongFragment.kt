@@ -12,9 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zdy.mykotlin.R
-import com.zdy.view.OnPullRefreshListener
-import com.zdy.view.SuperSwipeRefreshLayout
-import com.zdy.view.ZZSwipeRefreshView
+import com.zdy.view.swipeRefresh.OnPullRefreshListener
+import com.zdy.view.swipeRefresh.ZZSwipeRefreshView
 import java.util.*
 
 /**

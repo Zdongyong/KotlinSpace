@@ -1,3 +1,4 @@
+include ':verticaltablayout'
 include ':retrofit_ktx'
 include ':paging_zhu'
 include ':app'

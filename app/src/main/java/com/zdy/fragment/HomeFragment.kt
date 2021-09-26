@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.zdy.mykotlin.R
 import com.zdy.paging.PagingActivity
+import com.zdy.paging.RecommendActivity
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -25,6 +26,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.ll_contents).setOnClickListener(View.OnClickListener {
             startActivity(Intent(activity, PagingActivity::class.java))
+        })
+        view.findViewById<View>(R.id.insurance_view).setOnClickListener(View.OnClickListener {
+            startActivity(Intent(activity, RecommendActivity::class.java))
         })
     }
 }
