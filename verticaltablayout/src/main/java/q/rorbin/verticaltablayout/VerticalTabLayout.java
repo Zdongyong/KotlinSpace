@@ -38,7 +38,7 @@ import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
  */
 public class VerticalTabLayout extends ScrollView {
     private Context mContext;
-    private TabStrip mTabStrip; //指示器
+    private TabStrip mTabStrip; //容器
     private int mColorIndicator;
     private TabView mSelectedTab; // title
     private int mTabMargin;

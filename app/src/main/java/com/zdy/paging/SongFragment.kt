@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zdy.mykotlin.R
 import com.zdy.view.swipeRefresh.OnPullRefreshListener
 import com.zdy.view.swipeRefresh.ZZSwipeRefreshView
+import kotlinx.android.synthetic.main.repo_item.*
 import java.util.*
 
 /**
@@ -21,7 +22,7 @@ import java.util.*
  * 描述：
  * 作者：zhudongyong
  */
-class SongFragment:Fragment() {
+class SongFragment(private val name_song: String):Fragment() {
 
     private var mRecyclerView: RecyclerView? = null
     private var swipeRefreshLayout: ZZSwipeRefreshView? = null
@@ -87,7 +88,7 @@ class SongFragment:Fragment() {
 
     private fun initAdapter() {
         for (i in 0..31) {
-            mDatas.add("夜曲" + i)
+            mDatas.add(name_song + i)
         }
         mAdater = SongAdater(context, mDatas)
         mRecyclerView?.adapter = mAdater

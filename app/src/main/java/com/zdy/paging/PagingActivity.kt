@@ -26,6 +26,7 @@ class PagingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = "古力-Paging"
         setContentView(R.layout.activity_tab_paging)
         mViewPager = findViewById(R.id.view_pager)
         tablayout = findViewById(R.id.tablayout)
@@ -38,10 +39,10 @@ class PagingActivity : AppCompatActivity() {
 
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
-                    0 -> SongFragment()
-                    1 -> SongFragment()
-                    2 -> SongFragment()
-                    else -> SongFragment()
+                    0 -> SongFragment("热门")
+                    1 -> SongFragment("专辑")
+                    2 -> SongFragment("单曲")
+                    else -> SongFragment("MV")
                 }
             }
         }

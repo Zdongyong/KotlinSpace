@@ -21,13 +21,12 @@ class SongAdater(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         var view:View = LayoutInflater.from(context).inflate(R.layout.item_song_laypout, parent, false)
-        var holder = MyViewHolder(view)
-        return  holder
+        return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.name.text = list.get(position)
-
+        holder.no.text = position.toString()
+        holder.name.text = list[position]
     }
 
     override fun getItemCount(): Int {
@@ -35,6 +34,7 @@ class SongAdater(
     }
 
     class MyViewHolder(view:View) : RecyclerView.ViewHolder(view) {
+        var no: TextView = view.findViewById(R.id.tv_item_muisc_no) as TextView
         var name: TextView = view.findViewById(R.id.tv_item_muisc_song) as TextView
     }
 

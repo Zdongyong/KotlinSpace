@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <q.rorbin.verticaltablayout.VerticalTabLayout
+    <com.zdy.view.verticalTab.VerticalTabView
         android:id="@+id/tv_tab_title"
-        android:layout_width="60dp"
+        android:layout_width="70dp"
+        android:background="@color/colorPrimary"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

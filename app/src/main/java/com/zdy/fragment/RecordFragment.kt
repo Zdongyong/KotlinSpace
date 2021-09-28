@@ -49,8 +49,8 @@ class RecordFragment: Fragment() {
 
 
     fun initViewPager() {
-        mFragments.add(SongFragment())
-        mFragments.add(SongFragment())
+        mFragments.add(SongFragment("热门"))
+        mFragments.add(SongFragment("专辑"))
         mFragmentAdapter = MyFragmentAdapter(
             activity?.supportFragmentManager
         )
