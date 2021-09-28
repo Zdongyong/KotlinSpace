@@ -34,6 +34,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
     private fun initViewPager() {
         tablayout?.setOnTabSelectedListener(this)
         mViewPager?.isUserInputEnabled = false
+//        mViewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
         mViewPager?.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = 5
 

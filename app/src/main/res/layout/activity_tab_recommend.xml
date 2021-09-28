@@ -15,6 +15,7 @@
         android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/tv_tab_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
