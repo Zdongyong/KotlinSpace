@@ -2,11 +2,8 @@ package com.zdy.paging
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -14,8 +11,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.zdy.mykotlin.R
 import com.zdy.view.BookFlipPageTransformer2
+import com.zdy.view.CardTransformer
+import com.zdy.view.ViewPager2SlowScrollHelper
 import com.zdy.view.verticalTab.TabTitle
 import com.zdy.view.verticalTab.VerticalTabView
+import java.util.*
 
 
 /**
@@ -29,6 +29,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
     private var tablayout: VerticalTabView? = null
 
     private val tabTitles = mutableListOf<TabTitle>()
+    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
     private fun initViewPager() {
         tablayout?.setOnTabSelectedListener(this)
-        mViewPager?.isUserInputEnabled = false
+//        mViewPager?.isUserInputEnabled = false
 //        mViewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
         mViewPager?.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = 5
@@ -57,9 +58,8 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
             }
 
         }
-
         var bookFlipTransformer = BookFlipPageTransformer2()
-        mViewPager?.setPageTransformer(bookFlipTransformer)
+        mViewPager?.setPageTransformer(CardTransformer())
 
         tabTitles.add(TabTitle("热门", R.mipmap.labour_icon))
         tabTitles.add(TabTitle("专辑", R.mipmap.insurance_icon))
@@ -67,6 +67,12 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
         tabTitles.add(TabTitle("独家", R.mipmap.cost_exchange))
         tabTitles.add(TabTitle("MV", R.mipmap.league_icon))
         tablayout?.setTab(tabTitles)
+        mViewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                tablayout?.setTabSelected(position)
+            }
+        })
+        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,1000) }!!
     }
 
     private fun setPageTransformer(view: View){
@@ -79,14 +85,14 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
     }
 
     private fun setScaleIn(view: View){
-        val scaleAnimationIn =  ScaleAnimation(0f, 1.0f, 0f, 1.0f,view.pivotX,view.pivotY)
+        val scaleAnimationIn =  ScaleAnimation(0f, 1.0f, 0f, 1.0f, view.pivotX, view.pivotY)
         scaleAnimationIn.duration = 1000
         scaleAnimationIn.fillAfter = true
         view.startAnimation(scaleAnimationIn)
     }
 
     private fun setScaleOut(view: View){
-        val scaleAnimationOut =  ScaleAnimation(1.0f, 0f, 1.0f, 0f,view.pivotX,view.pivotY)
+        val scaleAnimationOut =  ScaleAnimation(1.0f, 0f, 1.0f, 0f, view.pivotX, view.pivotY)
         scaleAnimationOut.duration = 1000
         scaleAnimationOut.fillAfter = true
         scaleAnimationOut.start()
@@ -96,7 +102,8 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
 
     override fun onTabSelected(position: Int) {
-        mViewPager?.currentItem = position
+//        mViewPager?.setCurrentItem(position, false)
+        viewPager2SlowScrollHelper?.setCurrentItem(position, false)
     }
 
 

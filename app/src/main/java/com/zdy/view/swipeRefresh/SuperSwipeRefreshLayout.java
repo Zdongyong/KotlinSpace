@@ -139,7 +139,6 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
     private AnimationListener mRefreshListener = new AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
-            Log.d("123123","=====onAnimationStart=");
         }
 
         @Override
@@ -148,7 +147,6 @@ public class SuperSwipeRefreshLayout extends ViewGroup {
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            Log.d("123123","=====onAnimationEnd=");
             if (mRefreshing) {
                 if (mNotify) {
                     if (usingDefaultHeader) {

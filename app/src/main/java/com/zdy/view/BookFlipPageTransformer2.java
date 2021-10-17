@@ -93,7 +93,7 @@ public class BookFlipPageTransformer2 implements ViewPager2.PageTransformer {
         setTranslation(page);
         if (requireViewPager(page).getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL)
         {
-            setPivot(page, 0f, page.getHeight() * 0.5f);
+            setPivot(page, page.getWidth(), page.getHeight() * 0.5f);
         }
         else if (requireViewPager(page).getOrientation() == ViewPager2.ORIENTATION_VERTICAL)
         {
