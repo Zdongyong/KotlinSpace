@@ -72,7 +72,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
                 tablayout?.setTabSelected(position)
             }
         })
-        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,1000) }!!
+        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,450) }!!
     }
 
     private fun setPageTransformer(view: View){

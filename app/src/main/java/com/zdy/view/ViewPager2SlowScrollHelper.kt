@@ -90,7 +90,6 @@ class ViewPager2SlowScrollHelper(private val vp: ViewPager2, var duration: Long)
         val linearSmoothScroller = getSlowLinearSmoothScroller(context)
         replaceDecelerateInterpolator(linearSmoothScroller)
         linearSmoothScroller.targetPosition = item
-        Log.d("123123","======$item===")
         layoutManager?.startSmoothScroll(linearSmoothScroller)
     }
 
