@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.zdy.mykotlin.R
 import com.zdy.view.BookFlipPageTransformer2
 import com.zdy.view.CardTransformer
+import com.zdy.view.MyPagerHelper
 import com.zdy.view.ViewPager2SlowScrollHelper
 import com.zdy.view.verticalTab.TabTitle
 import com.zdy.view.verticalTab.VerticalTabView
@@ -29,7 +30,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
     private var tablayout: VerticalTabView? = null
 
     private val tabTitles = mutableListOf<TabTitle>()
-    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
+//    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
                 tablayout?.setTabSelected(position)
             }
         })
-        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,450) }!!
+//        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,450) }!!
     }
 
     private fun setPageTransformer(view: View){
@@ -103,7 +104,8 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
     override fun onTabSelected(position: Int) {
 //        mViewPager?.setCurrentItem(position, false)
-        viewPager2SlowScrollHelper?.setCurrentItem(position, false)
+//        viewPager2SlowScrollHelper?.setCurrentItem(position, false)
+        mViewPager?.let { MyPagerHelper.setCurrentItem(it, position, 450) }
     }
 
 

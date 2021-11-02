@@ -49,14 +49,14 @@ class CardTransformer : ViewPager2.PageTransformer {
                 }
                 position <= CENTER -> { // [-1,0]
                     flipPage(page, position, percentage)
-                    if (position != 0f){
-                        page.alpha = abs(percentage) / 3
-                    } else{
-                        page.alpha = 1.0f
-                    }
+//                    if (position != 0f){
+//                        page.alpha = abs(percentage) / 3
+//                    } else{
+//                        page.alpha = 1.0f
+//                    }
                 }
                 position < RIGHT -> { // (0,1]
-                    page.alpha = 1.0f * percentage
+//                    page.alpha = 1.0f * percentage
                     flipNextPage(page, position, percentage) //下一页
                 }
             }
@@ -96,13 +96,13 @@ class CardTransformer : ViewPager2.PageTransformer {
             page.rotationY = max(-170 * (percentage + 1) - 85, -360f)
 
         }
-        if (RIGHT - position < position - CENTER){ // 递增 顺时针
-            mHandler.removeMessages(1)
-            val msg = Message.obtain()
-            msg.what = 1
-            msg.obj = page
-            mHandler.sendMessageDelayed(msg,100)
-        }
+//        if (RIGHT - position < position - CENTER){ // 递增 顺时针
+//            mHandler.removeMessages(1)
+//            val msg = Message.obtain()
+//            msg.what = 1
+//            msg.obj = page
+//            mHandler.sendMessageDelayed(msg,100)
+//        }
     }
 
     private fun setRotationY(view: View) {
