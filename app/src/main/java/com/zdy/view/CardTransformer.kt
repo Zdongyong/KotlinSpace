@@ -24,14 +24,16 @@ class CardTransformer : ViewPager2.PageTransformer {
         private const val LEFT = -1
         private const val CENTER = 0 //表示当前
         private const val RIGHT = 1
+        private const val ROTATION_OFFSET_X = 35
+        private const val ROTATION_FIRST = 117L
+        private const val ROTATION_SECOND = 333L
     }
 
-    private var mHandler: Handler = object :Handler(){
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            setRotationY(msg.obj as View)
-        }
-    }
+    private lateinit var view: View
+    private val rotationAnimPathF =
+        PathInterpolator(0.32f, 0.8f, 0.78f, 1.0f)
+    private val rotationAnimPathS =
+        PathInterpolator(0.27f, 0.01f, 0.71f, 1.0f)
 
     /**
      * position - 指定页面相对于屏幕中心(旋转轴)的位置
@@ -39,7 +41,6 @@ class CardTransformer : ViewPager2.PageTransformer {
     override fun transformPage(@NonNull page: View, position: Float) {
         page.apply {
             val percentage = 1 - abs(position)
-
             when {
                 position < LEFT -> { // [-Infinity,-1)
                     page.translationX = -position * page.width
@@ -48,15 +49,21 @@ class CardTransformer : ViewPager2.PageTransformer {
                     page.rotation = 0f
                 }
                 position <= CENTER -> { // [-1,0]
+                    page.cameraDistance = -30000f
                     flipPage(page, position, percentage)
-//                    if (position != 0f){
-//                        page.alpha = abs(percentage) / 3
-//                    } else{
+//                    if (position != 0f) {
+//                        page.alpha = abs(percentage)
+//                    } else {
 //                        page.alpha = 1.0f
 //                    }
                 }
-                position < RIGHT -> { // (0,1]
-//                    page.alpha = 1.0f * percentage
+                position < RIGHT -> { // (0,1]A
+                    page.cameraDistance = -30000f
+//                    if (checkDirection(position)){
+//                        page.alpha = 1.0f * position   //0.96
+//                    }else{
+//                        page.alpha = 1.0f  //0.03
+//                    }
                     flipNextPage(page, position, percentage) //下一页
                 }
             }
@@ -66,7 +73,6 @@ class CardTransformer : ViewPager2.PageTransformer {
             } else {
                 page.visibility = View.INVISIBLE
             }
-
         }
     }
 
@@ -74,49 +80,60 @@ class CardTransformer : ViewPager2.PageTransformer {
      * 处理当前页
      */
     private fun flipPage(page: View, position: Float, percentage: Float) {
-        page.cameraDistance = -30000f
         setPivot(page, page.width.toFloat(), page.height.toFloat()) //设置翻转轴
         setTranslation(page)
+//        if (position != 0f) {
+//            if (isClockWise){ //需要区分是顺时针还是逆时针
+//                page.alpha = 1.0f * percentage / 2
+//            } else{
+//                page.alpha = 1.0f * percentage * 3 / 2
+//            }
+//        } else {
+//            page.alpha = 1.0f
+//        }
         if (position <= 0) {
             page.rotationY = 180 * (percentage + 1)
         }
+        view = page
     }
 
     /**
-     * 处理上一页
-     *
-     * 回弹效果
-     *
+     * 处理下一页
      */
     private fun flipNextPage(page: View, position: Float, percentage: Float) {
-        page.cameraDistance = -30000f
         setTranslation(page)
         setPivot(page, page.width.toFloat(), page.height.toFloat()) //设置翻转轴
+//        page.alpha = 1.0f * percentage
         if (position > 0) {
-            page.rotationY = max(-170 * (percentage + 1) - 85, -360f)
-
+            page.rotationY = 90 * (1 - percentage)
         }
-//        if (RIGHT - position < position - CENTER){ // 递增 顺时针
-//            mHandler.removeMessages(1)
-//            val msg = Message.obtain()
-//            msg.what = 1
-//            msg.obj = page
-//            mHandler.sendMessageDelayed(msg,100)
-//        }
+        view = page
     }
 
-    private fun setRotationY(view: View) {
+    fun setRotationClockWise() {
+        view.clearAnimation()
         var animator = ObjectAnimator.ofFloat(view, "rotationY", -360f, -361.3f)
-        animator.duration = 117
-        animator.interpolator = PathInterpolator(0.32f, 0.8f, 0.78f, 1f)
+        animator.duration = ROTATION_FIRST
+        animator.interpolator = rotationAnimPathF
         animator = ObjectAnimator.ofFloat(view, "rotationY", -361.3f, -360f)
-        animator.duration = 333
-        animator.interpolator = PathInterpolator(0.27f, 0.01f, 0.71f, 1f)
+        animator.duration = ROTATION_SECOND
+        animator.interpolator = rotationAnimPathS
+        animator.start()
+    }
+
+    fun setRotationUnClockWise() {
+        view.clearAnimation()
+        var animator = ObjectAnimator.ofFloat(view, "rotationY", 360f, 361.3f)
+        animator.duration = ROTATION_FIRST
+        animator.interpolator = rotationAnimPathF
+        animator = ObjectAnimator.ofFloat(view, "rotationY", 361.3f, 360f)
+        animator.duration = ROTATION_SECOND
+        animator.interpolator = rotationAnimPathS
         animator.start()
     }
 
     private fun setPivot(page: View, pivotX: Float, pivotY: Float) {
-        page.pivotX = pivotX
+        page.pivotX = pivotX + ROTATION_OFFSET_X
         page.pivotY = pivotY
     }
 
@@ -138,19 +155,6 @@ class CardTransformer : ViewPager2.PageTransformer {
         throw IllegalStateException(
             "Expected the page view to be managed by a ViewPager2 instance."
         )
-    }
-
-    private fun setTransformer(view: View) {
-//        var rotateAnimation = RotateAnimation(0f, 90f, view.width.toFloat(), view.height.toFloat())
-//        rotateAnimation.duration = 1000
-//        rotateAnimation = RotateAnimation(-90f, 0f, view.width.toFloat(), view.height.toFloat())
-//        rotateAnimation.duration = 1000
-        var animator = ObjectAnimator.ofFloat(view, "rotationY", 0f, 90f)
-        animator.duration = 1000
-        animator = ObjectAnimator.ofFloat(view, "rotationY", -90f, 0f)
-        animator.duration = 1000
-//        view.startAnimation(rotateAnimation)
-        animator.start()
     }
 
 }

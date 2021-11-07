@@ -5,9 +5,13 @@ import android.animation.ValueAnimator
 import android.os.Handler
 import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.view.animation.PathInterpolator
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.zdy.view.verticalTab.VerticalTabView
+import java.lang.reflect.Method
 import kotlin.math.abs
 
 /**
@@ -15,49 +19,109 @@ import kotlin.math.abs
  * 描述：
  * 作者：zhudongyong
  */
-class MyPagerHelper {
+class MyPagerHelper constructor(private val vp: ViewPager2){
 
     companion object {
-        /**
-         * 保存前一个animatedValue
-         */
-        private var previousValue = 0
+        private const val DURATION_SHORT: Long = 450
+        private const val DURATION_MIDDLE: Long = 900
+        private const val DURATION_LONG: Long = 1200
+    }
 
-        /**
-         * 设置当前Item
-         * @param pager    viewpager2
-         * @param item     下一个跳转的item
-         * @param duration scroll时长
-         */
-        fun setCurrentItem(pager: ViewPager2, item: Int, duration: Long) {
-            previousValue = 0
-            val currentItem = pager.currentItem
-            val pagePxWidth = pager.width
-            val pxToDrag = pagePxWidth * (item - currentItem)
-            val animator = ValueAnimator.ofInt(0, pxToDrag)
+    private val recyclerView: RecyclerView
+    private val mScrollEventAdapter: Any
+    private val getRelativeScrollPositionMethod: Method
+    private val notifyProgrammaticScrollMethod: Method
 
-            animator.addUpdateListener { animation ->
-                val currentValue = animation.animatedValue as Int
-                val currentPxToDrag = (currentValue - previousValue).toFloat()
-                pager.fakeDragBy(-currentPxToDrag)
-                previousValue = currentValue
+    private var previousValue: Int = 0
+
+    private val mDecelerateInterpolator: DecelerateInterpolator = DecelerateInterpolator(2f)
+
+    private val translationAnimPath = PathInterpolator(0.4f, 0f, 0.20f, 0.96f)
+
+
+    init {
+        val mRecyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+        mRecyclerViewField.isAccessible = true
+        recyclerView = mRecyclerViewField.get(vp) as RecyclerView
+        val mScrollEventAdapterField =
+            ViewPager2::class.java.getDeclaredField("mScrollEventAdapter")
+        mScrollEventAdapterField.isAccessible = true
+        mScrollEventAdapter = mScrollEventAdapterField.get(vp)
+        getRelativeScrollPositionMethod =
+            mScrollEventAdapter.javaClass.getDeclaredMethod("getRelativeScrollPosition")
+        getRelativeScrollPositionMethod.isAccessible = true
+        notifyProgrammaticScrollMethod = mScrollEventAdapter.javaClass.getDeclaredMethod(
+            "notifyProgrammaticScroll",
+            Int::class.java,
+            Boolean::class.java
+        )
+        notifyProgrammaticScrollMethod.isAccessible = true
+    }
+
+    /**
+     * 设置当前Item
+     * @param verticalTabView    VerticalTabView
+     * @param cardTransformer    CardTransformer
+     * @param item     下一个跳转的item
+     */
+    fun setCurrentItem(
+        verticalTabView: VerticalTabView,
+        cardTransformer: CardTransformer,
+        item: Int
+    ) {
+        previousValue = 0
+        val currentItem = vp.currentItem
+        val pxToDrag = vp.width * (item - currentItem)
+        val intAnimator = ValueAnimator.ofInt(0, pxToDrag)
+        intAnimator.addUpdateListener { animation ->
+            val currentValue = animation.animatedValue as Int
+            val currentPxToDrag = (currentValue - previousValue).toFloat()
+            if (vp.isFakeDragging) {
+                vp.fakeDragBy(-currentPxToDrag)
             }
-            animator.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {
-                    pager.beginFakeDrag()
-                }
-
-                override fun onAnimationEnd(animation: Animator) {
-                    pager.endFakeDrag()
-                }
-
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {}
-            })
-            animator.interpolator = PathInterpolator(0.4f,0f,0.61f,0.94f)
-            animator.duration = duration * abs(item - currentItem)
-            animator.start()
+            previousValue = currentValue
         }
+
+        intAnimator.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                if (!vp.isFakeDragging) {
+                    vp.beginFakeDrag()
+                }
+//                verticalTabView.setCanTouch(false)
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                if (vp.isFakeDragging) {
+                    vp.endFakeDrag()
+                }
+//                verticalTabView.setCanTouch(true)
+                if (item - currentItem > 0) { // 顺时针
+                    cardTransformer.setRotationClockWise()
+                } else {
+                    cardTransformer.setRotationUnClockWise()
+                }
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+
+        intAnimator.interpolator = translationAnimPath
+        var abst = abs(item - currentItem)
+//        intAnimator.duration = DURATION_SHORT * abst
+        intAnimator.duration = when {
+            abst <= 1 -> {
+                DURATION_SHORT
+            }
+            abst <= 3 -> {
+                DURATION_MIDDLE
+            }
+            else -> {
+                DURATION_LONG
+            }
+        }
+        intAnimator.start()
+
     }
 
 }

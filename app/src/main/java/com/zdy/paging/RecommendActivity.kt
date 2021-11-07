@@ -10,13 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.zdy.mykotlin.R
-import com.zdy.view.BookFlipPageTransformer2
+import com.zdy.view.BookFlipPageTransformer
 import com.zdy.view.CardTransformer
 import com.zdy.view.MyPagerHelper
-import com.zdy.view.ViewPager2SlowScrollHelper
 import com.zdy.view.verticalTab.TabTitle
 import com.zdy.view.verticalTab.VerticalTabView
-import java.util.*
 
 
 /**
@@ -31,6 +29,9 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
     private val tabTitles = mutableListOf<TabTitle>()
 //    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
+    private lateinit var myPagerHelper: MyPagerHelper
+    private var bookFlipTransformer = BookFlipPageTransformer(11)
+//    private var cardTransformer = CardTransformer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +60,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
             }
 
         }
-        var bookFlipTransformer = BookFlipPageTransformer2()
-        mViewPager?.setPageTransformer(CardTransformer())
+        mViewPager?.setPageTransformer(bookFlipTransformer)
 
         tabTitles.add(TabTitle("热门", R.mipmap.labour_icon))
         tabTitles.add(TabTitle("专辑", R.mipmap.insurance_icon))
@@ -73,6 +73,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
                 tablayout?.setTabSelected(position)
             }
         })
+        myPagerHelper = mViewPager?.let { MyPagerHelper(it) }!!
 //        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,450) }!!
     }
 
@@ -103,9 +104,9 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
 
     override fun onTabSelected(position: Int) {
-//        mViewPager?.setCurrentItem(position, false)
+        mViewPager?.setCurrentItem(position, false)
 //        viewPager2SlowScrollHelper?.setCurrentItem(position, false)
-        mViewPager?.let { MyPagerHelper.setCurrentItem(it, position, 450) }
+//        mViewPager?.let { myPagerHelper.setCurrentItem(tablayout!!,cardTransformer, position) }
     }
 
 
