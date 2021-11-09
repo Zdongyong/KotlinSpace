@@ -64,12 +64,12 @@ class MyPagerHelper constructor(private val vp: ViewPager2){
      * @param cardTransformer    CardTransformer
      * @param item     下一个跳转的item
      */
-    fun setCurrentItem(
+    fun setCurrentItemWithAnimator(
         verticalTabView: VerticalTabView,
         cardTransformer: CardTransformer,
         item: Int
     ) {
-        previousValue = 0
+//        previousValue = 0
         val currentItem = vp.currentItem
         val pxToDrag = vp.width * (item - currentItem)
         val intAnimator = ValueAnimator.ofInt(0, pxToDrag)
@@ -120,6 +120,42 @@ class MyPagerHelper constructor(private val vp: ViewPager2){
                 DURATION_LONG
             }
         }
+        intAnimator.start()
+
+    }
+
+    fun setCurrentItem(
+        item: Int
+    ) {
+        previousValue = 0
+        val currentItem = vp.currentItem
+        val pxToDrag = vp.width * (item - currentItem)
+        val intAnimator = ValueAnimator.ofInt(0, pxToDrag)
+        intAnimator.addUpdateListener { animation ->
+            val currentValue = animation.animatedValue as Int
+            val currentPxToDrag = (currentValue - previousValue).toFloat()
+            if (vp.isFakeDragging) {
+                vp.fakeDragBy(-currentPxToDrag)
+            }
+            previousValue = currentValue
+        }
+        intAnimator.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                if (!vp.isFakeDragging) {
+                    vp.beginFakeDrag()
+                }
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                if (vp.isFakeDragging) {
+                    vp.endFakeDrag()
+                }
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+        intAnimator.duration = 10
         intAnimator.start()
 
     }

@@ -51,19 +51,9 @@ class CardTransformer : ViewPager2.PageTransformer {
                 position <= CENTER -> { // [-1,0]
                     page.cameraDistance = -30000f
                     flipPage(page, position, percentage)
-//                    if (position != 0f) {
-//                        page.alpha = abs(percentage)
-//                    } else {
-//                        page.alpha = 1.0f
-//                    }
                 }
                 position < RIGHT -> { // (0,1]A
                     page.cameraDistance = -30000f
-//                    if (checkDirection(position)){
-//                        page.alpha = 1.0f * position   //0.96
-//                    }else{
-//                        page.alpha = 1.0f  //0.03
-//                    }
                     flipNextPage(page, position, percentage) //下一页
                 }
             }

@@ -2,6 +2,8 @@ package com.zdy.paging
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
@@ -13,8 +15,10 @@ import com.zdy.mykotlin.R
 import com.zdy.view.BookFlipPageTransformer
 import com.zdy.view.CardTransformer
 import com.zdy.view.MyPagerHelper
+import com.zdy.view.ViewPager2SlowScrollHelper
 import com.zdy.view.verticalTab.TabTitle
 import com.zdy.view.verticalTab.VerticalTabView
+import kotlin.math.abs
 
 
 /**
@@ -28,10 +32,11 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
     private var tablayout: VerticalTabView? = null
 
     private val tabTitles = mutableListOf<TabTitle>()
-//    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
+    private lateinit var viewPager2SlowScrollHelper: ViewPager2SlowScrollHelper
     private lateinit var myPagerHelper: MyPagerHelper
-    private var bookFlipTransformer = BookFlipPageTransformer(11)
-//    private var cardTransformer = CardTransformer()
+//    private var bookFlipTransformer = BookFlipPageTransformer(11)
+    private var cardTransformer = CardTransformer()
+    private var currentPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +65,7 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
             }
 
         }
-        mViewPager?.setPageTransformer(bookFlipTransformer)
+        mViewPager?.setPageTransformer(cardTransformer)
 
         tabTitles.add(TabTitle("热门", R.mipmap.labour_icon))
         tabTitles.add(TabTitle("专辑", R.mipmap.insurance_icon))
@@ -73,8 +78,9 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
                 tablayout?.setTabSelected(position)
             }
         })
+        mViewPager?.isUserInputEnabled = false
         myPagerHelper = mViewPager?.let { MyPagerHelper(it) }!!
-//        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,450) }!!
+        viewPager2SlowScrollHelper = mViewPager?.let { ViewPager2SlowScrollHelper(it,10) }!!
     }
 
     private fun setPageTransformer(view: View){
@@ -104,9 +110,20 @@ class RecommendActivity : AppCompatActivity(),VerticalTabView.OnTabSelectedListe
 
 
     override fun onTabSelected(position: Int) {
-        mViewPager?.setCurrentItem(position, false)
-//        viewPager2SlowScrollHelper?.setCurrentItem(position, false)
-//        mViewPager?.let { myPagerHelper.setCurrentItem(tablayout!!,cardTransformer, position) }
+        if (currentPosition == position) return
+        if (abs(currentPosition - position) > 1){
+            val beforePosition = if (position>currentPosition) position - 1 else position + 1
+            Log.d("123123","==$position=======$beforePosition==========")
+//            mViewPager?.setCurrentItem(beforePosition, false)
+            mViewPager?.let { myPagerHelper.setCurrentItem(beforePosition) }
+            Handler().postDelayed(Runnable {
+                mViewPager?.let { myPagerHelper.setCurrentItemWithAnimator(tablayout!!,cardTransformer, position) }
+            },100)
+        }else{
+            mViewPager?.let { myPagerHelper.setCurrentItemWithAnimator(tablayout!!,cardTransformer, position) }
+        }
+        currentPosition = position
+
     }
 
 
