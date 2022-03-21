@@ -11,6 +11,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.core.view.marginTop
+import com.bumptech.glide.Glide
 import com.zdy.mykotlin.R
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -128,7 +129,11 @@ class VerticalTabView : ScrollView {
         }
 
         fun setTitle(sourceId: Int, title: String) {
-            _icon?.setImageResource(sourceId)
+            _icon?.let {
+                Glide.with(it).load("https://ai-os-feeds-admin-static.vivo.com.cn/ai-os-feeds-admin/news/yangshi/20220308/ac3583abe6244a04b064cf16e75352c2.webp")
+                    .into(it)
+            }
+//            _icon?.setImageResource(sourceId)
             _title?.text = title
         }
 

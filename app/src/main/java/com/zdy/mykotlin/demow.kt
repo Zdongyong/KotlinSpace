@@ -10,10 +10,22 @@ import java.time.Instant
  */
 fun main() {
 
-    var numbers = arrayOf<Int>(2);
-    var numbers2 = arrayOf(1, 2, 3);
-    numbers[0] = 1;
-    println(numbers2.size)
+    var numbers = arrayOf<String>("#WEDF78","#123432","#WEDF78","#123432","#WEDF78","#QWE32");
+
+
+    val aa = numbers.groupingBy { it }.eachCount().filter { (_, v) -> v >= 2 }
+
+    println(aa)
+
+    aa.forEach { (t, u) ->
+        println(t)
+        println(numbers.mapIndexed { index, s ->
+            if (t==s) {
+                index
+            }
+        })
+    }
+
 
 //    var numbers3 = Array(20, { value: Int -> (value + 100) });
 //    for (value: Int in numbers3) {
