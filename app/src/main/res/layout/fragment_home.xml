@@ -141,7 +141,7 @@
                 <TextView
                     style="@style/wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="设备"
+                    android:text="联动"
                     android:textColor="@color/title_black"
                     android:textSize="14sp" />
 

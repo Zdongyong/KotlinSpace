@@ -129,11 +129,7 @@ class VerticalTabView : ScrollView {
         }
 
         fun setTitle(sourceId: Int, title: String) {
-            _icon?.let {
-                Glide.with(it).load("https://ai-os-feeds-admin-static.vivo.com.cn/ai-os-feeds-admin/news/yangshi/20220308/ac3583abe6244a04b064cf16e75352c2.webp")
-                    .into(it)
-            }
-//            _icon?.setImageResource(sourceId)
+            _icon?.setImageResource(sourceId)
             _title?.text = title
         }
 

@@ -10,6 +10,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.zdy.mykotlin.R
 import com.zdy.paging.AtomActivity
+import com.zdy.paging.LinkageActivity
 import com.zdy.paging.PagingActivity
 import com.zdy.paging.RecommendActivity
 
@@ -35,6 +36,9 @@ class HomeFragment : Fragment() {
         })
         view.findViewById<View>(R.id.technology_view).setOnClickListener(View.OnClickListener {
             startActivity(Intent(activity, AtomActivity::class.java))
+        })
+        view.findViewById<View>(R.id.equipment_view).setOnClickListener(View.OnClickListener {
+            startActivity(Intent(activity, LinkageActivity::class.java))
         })
 
         val ivImage:ImageView = view.findViewById<View>(R.id.iv_bottom) as ImageView
