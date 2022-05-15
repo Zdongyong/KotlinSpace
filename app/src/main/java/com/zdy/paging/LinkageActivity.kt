@@ -1,7 +1,7 @@
 package com.zdy.paging
 
-import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,6 +12,7 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zdy.mykotlin.R
+import kotlin.math.abs
 
 /**
  * 创建日期：8/27/21 on 10:20 PM
@@ -46,6 +47,7 @@ class LinkageActivity : AppCompatActivity() {
         val toolbarHeight = resources.getDimension(R.dimen.toolbar_height);
         val initHeight = resources.getDimension(R.dimen.subscription_head);
         appBar?.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            Log.i("123123", "======${appBarLayout.totalScrollRange}========$verticalOffset======")
             if (mSelfHeight === 0) {
 //                mSelfHeight = mSubscriptionTitle.getHeight()
 //                val distanceTitle: Float =
@@ -61,9 +63,13 @@ class LinkageActivity : AppCompatActivity() {
 //                mHeadImgScale = distanceHeadImg / (initHeight - toolbarHeight)
 //                mSubScribeScaleX = distanceSubscribeX / (initHeight - toolbarHeight)
             }
-            val scale: Float = 1.0f - -verticalOffset / (initHeight - toolbarHeight)
-            mHeadImage?.scaleX = scale
-            mHeadImage?.scaleY = scale
+            val size = -verticalOffset.toFloat()
+            val total = appBarLayout.totalScrollRange.toFloat()
+            val percentage = (1.0f - size / total).toDouble()
+//            val scale: Float = 1.0f - -verticalOffset / (initHeight - toolbarHeight)
+            mHeadImage?.scaleX = percentage.toFloat()
+            mHeadImage?.scaleY = percentage.toFloat()
+//            mHeadImage?.alpha = percentage
 //            mHeadImage?.translationY = mHeadImgScale * verticalOffset
 //            mSubscriptionTitle.setTranslationY(mTitleScale * verticalOffset)
 //            mSubscribe.setTranslationY(mSubScribeScale * verticalOffset)
@@ -92,6 +98,11 @@ class LinkageActivity : AppCompatActivity() {
                 else -> tab.text = mTitles[1]
             }
         }.attach()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 
