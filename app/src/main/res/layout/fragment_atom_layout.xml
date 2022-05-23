@@ -3,10 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.zdy.view.swipeRefresh.ZZSwipeRefreshView
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.zdy.view.swipeRefresh.ZZSwipeRefreshView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

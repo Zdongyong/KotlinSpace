@@ -83,11 +83,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.core.widget.NestedScrollView
+    <com.example.meterialproject.view.nested.ChildNestedScrollView
         android:id="@+id/subscription_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -102,6 +103,6 @@
                 android:orientation="horizontal" />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.example.meterialproject.view.nested.ChildNestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
