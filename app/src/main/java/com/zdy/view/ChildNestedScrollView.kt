@@ -66,7 +66,7 @@ class ChildNestedScrollView @JvmOverloads constructor(
                     )
                 ) { // 父亲消费
                     Log.i(
-                        "parentView是否消费1",
+                        TAG,
                         "mScrollConsumed:${mScrollConsumed[0]}\t${mScrollConsumed[1]} mScrollOffsetX:${mScrollOffset[0]}\tmScrollOffsetY:${mScrollOffset[1]}"
                     )
                     tempY -= mScrollConsumed[1]
@@ -86,7 +86,7 @@ class ChildNestedScrollView @JvmOverloads constructor(
                     scrollY - measuredHeight,
                     mScrollOffset,
                     ViewCompat.TYPE_TOUCH)){
-                   Log.i("szj分发事件","dispatchNestedScroll\t lastTouchY:${lastTouchY}")
+                   Log.i(TAG,"dispatchNestedScroll\t lastTouchY:${lastTouchY}")
                }
 
             }
@@ -209,7 +209,7 @@ class ChildNestedScrollView @JvmOverloads constructor(
 
         super.addView(child, params)
 
-        Log.e("szjCurrentViewSize2",
+        Log.e(TAG,
             "childView:${child::class.java.simpleName}\t" +
                     "childCount:$childCount")
     }
@@ -245,7 +245,7 @@ class ChildNestedScrollView @JvmOverloads constructor(
 
         if (tempY < 0) tempY = 0
 
-        Log.i("szj滑动距离child", "scrollY:$scrollY")
+        Log.i(TAG, "scrollY:$scrollY")
 
         super.scrollTo(x, tempY)
     }
